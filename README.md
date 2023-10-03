@@ -1,2 +1,2 @@
 # trilha-python-dio-me
- Códigos desenvolvidos durante Formação Python Developer da Dio
+ Códigos que desenvolvi durante Formação Python Developer da Dio.
