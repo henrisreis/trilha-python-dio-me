@@ -1,6 +1,7 @@
 def exibir_extrato(*, extrato):
     print(extrato)
 
+
 def criar_conta(conta_corrente, agencia, cpf):
     conta_corrente += 1
     conta = dict(conta=conta_corrente, agencia=agencia, cpf=cpf)
@@ -14,6 +15,7 @@ def criar_conta(conta_corrente, agencia, cpf):
 
     return conta_corrente, lista_contas, lista_clientes
 
+
 def criar_usuario(lista_clientes):
     nome = input('Nome: ')
     nascimento = input('Data de nascimento: ')
@@ -26,7 +28,8 @@ def criar_usuario(lista_clientes):
     print('USUÁRIO CRIADO COM SUCESSO!')
 
     return lista_clientes, lista_cpfs
-    
+
+
 def sacar(*, saldo, valor, extrato, limite_valor, numero_saques):
     excedeu_limite = valor > limite_valor
     excedeu_saldo = valor > saldo
@@ -52,6 +55,7 @@ def sacar(*, saldo, valor, extrato, limite_valor, numero_saques):
 
     return saldo, extrato
 
+
 def depositar(saldo, valor, extrato, /):
     saldo += valor
     extrato += f'\n| 1 DEPÓSITO DE R${valor:.2f} | SALDO: R${saldo:.2f} |'
@@ -59,6 +63,7 @@ def depositar(saldo, valor, extrato, /):
     print(f'DEPÓSITO DE R${deposito:.2f} REALIZADO COM SUCESSO!')
 
     return saldo, extrato
+
 
 menu = """
 SISTEMA BANCÁRIO
@@ -74,6 +79,7 @@ Digite a operação:
 
 -> """
 
+
 OPCOES = ['d', 's', 'e', 'q', 'c', 'cc']
 AGENCIA = '001'
 LIMITE_VALOR = 500
@@ -86,14 +92,16 @@ lista_clientes = []
 lista_contas = []
 lista_cpfs = []
 
-while True:
 
+while True:
     opcao = input(menu)
     print()
+
 
     if opcao not in OPCOES:
         print('Opção inválida!')
         continue
+
 
     if opcao == 'c':
         print('CADASTRO DE CLIENTE')
@@ -105,6 +113,7 @@ while True:
 
         lista_clientes, lista_cpfs = criar_usuario(lista_clientes)
 
+
     if opcao == 'cc':
         print('CADASTRO DE CONTA CORRENTE')
         cpf_cadastro = input('CPF para cadastro de conta corrente: ')
@@ -114,6 +123,7 @@ while True:
             continue
         
         conta_corrente, lista_contas, lista_clientes = criar_conta(conta_corrente, AGENCIA, cpf_cadastro)
+
 
     if opcao == 'd':
         print('DEPÓSITO')
@@ -126,7 +136,8 @@ while True:
             continue
 
         saldo, extrato = depositar(saldo, deposito, extrato)
-    
+
+
     if opcao == 's':
 
         excedeu_saques = numero_saques > LIMITE_SAQUES
@@ -144,9 +155,11 @@ while True:
 
         saldo, extrato = sacar(saldo=saldo, valor=saque, extrato=extrato, limite_valor=LIMITE_VALOR, numero_saques=numero_saques)
 
+
     if opcao == 'e':
         print('EXTRATO')
         exibir_extrato(extrato=extrato)
+
 
     if opcao == 'q':
         break
