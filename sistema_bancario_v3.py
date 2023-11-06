@@ -52,7 +52,7 @@ class Saque(Transacao):
         return self._valor
 
     def registrar(self, conta):
-        transacao_realizada = conta.depositar(self.valor)
+        transacao_realizada = conta.sacar(self.valor)
 
         if transacao_realizada:
             conta.historico.adicionar_transacao(self)
@@ -121,7 +121,7 @@ class Conta:
 
 class ContaCorrente(Conta):
     def __init__(self, numero, cliente, limite=500, limite_saques=3):
-        super().__init__(numero, cliente)
+        super().__init__(cliente, numero)
         self.limite = limite
         self.limite_saques = limite_saques
 

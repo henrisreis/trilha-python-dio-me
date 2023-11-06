@@ -10,10 +10,8 @@ def criar_conta(conta_corrente, agencia, cpf):
     for cliente in lista_clientes:
         if cpf_cadastro == cliente['cpf']:
             cliente['conta'] = conta
-            
-    print('CONTA CORRENTE CADASTRADA COM SUCESSO!')
 
-    return conta_corrente, lista_contas, lista_clientes
+    print('CONTA CORRENTE CADASTRADA COM SUCESSO!')
 
 
 def criar_usuario(lista_clientes):
@@ -23,11 +21,8 @@ def criar_usuario(lista_clientes):
 
     cliente = dict(nome=nome, nascimento=nascimento, cpf=cpf, endereco=endereco)
     lista_clientes.append(cliente)
-    lista_cpfs = [cliente['cpf'] for cliente in lista_clientes]
 
     print('USUÁRIO CRIADO COM SUCESSO!')
-
-    return lista_clientes, lista_cpfs
 
 
 def sacar(*, saldo, valor, extrato, limite_valor, numero_saques):
@@ -46,14 +41,12 @@ def sacar(*, saldo, valor, extrato, limite_valor, numero_saques):
     if excedeu_saldo:
         print('Impossível sacar! Valor superior ao saldo da conta!')
         return
-    
+
     print(f'SAQUE DE R${valor:.2f} REALIZADO COM SUCESSO!')
 
     numero_saques += 1
     saldo -= valor
     extrato += f'\n| 1 SAQUE DE R${valor:.2f} | SALDO: R${saldo:.2f} |'
-
-    return saldo, extrato
 
 
 def depositar(saldo, valor, extrato, /):
@@ -61,8 +54,6 @@ def depositar(saldo, valor, extrato, /):
     extrato += f'\n| 1 DEPÓSITO DE R${valor:.2f} | SALDO: R${saldo:.2f} |'
 
     print(f'DEPÓSITO DE R${deposito:.2f} REALIZADO COM SUCESSO!')
-
-    return saldo, extrato
 
 
 menu = """
@@ -80,7 +71,7 @@ Digite a operação:
 -> """
 
 
-OPCOES = ['d', 's', 'e', 'q', 'c', 'cc']
+OPCOES = ['d', 's', 'e', 'q', 'c', 'cc', 'segredo']
 AGENCIA = '001'
 LIMITE_VALOR = 500
 LIMITE_SAQUES = 3
@@ -97,11 +88,14 @@ while True:
     opcao = input(menu)
     print()
 
-
     if opcao not in OPCOES:
         print('Opção inválida!')
         continue
 
+    if opcao == 'segredo':
+        print(lista_clientes)
+        print(lista_contas)
+        print(lista_cpfs)
 
     if opcao == 'c':
         print('CADASTRO DE CLIENTE')
@@ -111,8 +105,8 @@ while True:
             print('Cliente já cadastrado.')
             continue
 
-        lista_clientes, lista_cpfs = criar_usuario(lista_clientes)
-
+        criar_usuario(lista_clientes)
+        lista_cpfs = [cliente['cpf'] for cliente in lista_clientes]
 
     if opcao == 'cc':
         print('CADASTRO DE CONTA CORRENTE')
@@ -121,31 +115,28 @@ while True:
         if cpf_cadastro not in lista_cpfs:
             print('O cliente precisa ser cadastrado!')
             continue
-        
-        conta_corrente, lista_contas, lista_clientes = criar_conta(conta_corrente, AGENCIA, cpf_cadastro)
 
+        criar_conta(conta_corrente, AGENCIA, cpf_cadastro)
 
     if opcao == 'd':
         print('DEPÓSITO')
         deposito = float(input('Valor a depositar: '))
-        
+
         deposito_invalido = deposito <= 0
 
         if deposito_invalido:
             print('Valor inválido!')
             continue
 
-        saldo, extrato = depositar(saldo, deposito, extrato)
-
+        depositar(saldo, deposito, extrato)
 
     if opcao == 's':
-
         excedeu_saques = numero_saques > LIMITE_SAQUES
-        
+
         if excedeu_saques:
             print('Quantidade limite de saques atingida!')
             continue
-        
+
         if saldo == 0:
             print('A conta não possui saldo!')
             continue
@@ -153,13 +144,11 @@ while True:
         print('SAQUE')
         saque = float(input('Valor a sacar: '))
 
-        saldo, extrato = sacar(saldo=saldo, valor=saque, extrato=extrato, limite_valor=LIMITE_VALOR, numero_saques=numero_saques)
-
+        sacar(saldo=saldo, valor=saque, extrato=extrato, limite_valor=LIMITE_VALOR, numero_saques=numero_saques)
 
     if opcao == 'e':
         print('EXTRATO')
         exibir_extrato(extrato=extrato)
-
 
     if opcao == 'q':
         break
